@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     
     var objRows = {};
@@ -12,11 +11,9 @@ $(document).ready(function(){
 
             var objGroups = {}, objCats = {};
 
-            /*
             if(number_of_rows > 1){
                 $(".mrQuestionTable tbody tr:first").append($(".mrQuestionTable tbody tr:first").next().find('td').unwrap());
             }
-            */
 
             var $cells = $(".mrQuestionTable tbody tr:first td").get().sort(function(a, b){
 
@@ -74,10 +71,8 @@ $(document).ready(function(){
                 }
             });
 
-            /*
             $(".mrQuestionTable tbody tr:first").find('td').removeAttr('colspan');
             $(".mrQuestionTable tbody tr:first").find('td').removeAttr('rowspan');
-            */
            
             $.each($cells, function(index, cell){
                 if($(cell).prop('colspan') == 1){
@@ -87,7 +82,7 @@ $(document).ready(function(){
 
             console.log(objCats);
 
-            //$(".mrQuestionTable tbody tr:first").remove();
+            $(".mrQuestionTable tbody tr:first").remove();
             
             $(".mrQuestionTable tbody").find('td').unwrap().wrap($('<tr/>'));
             $(".mrQuestionTable tbody tr td").removeAttr('style');
@@ -218,7 +213,8 @@ $(document).ready(function(){
                     
                         var $td = $(cell).parent().find('td');
                         
-                        if($td.prop('rowspan') != 1 || $(cell).parent().next().find('select').length == 0){
+                        //$(cell).parent().next().find('select').length == 0
+                        if($td.prop('rowspan') != 1){
                             $(cell).parent().addClass('grid-subgroup');
                             $td.removeAttr('rowspan');
                         } else {
@@ -240,10 +236,10 @@ $(document).ready(function(){
                             
                             if($(cell).find('.mrErrorText').length == 1){
                                 $(cell).find('.mrErrorText').hide();
-                                /*$(cell).parent().removeClass('bg-primary');*/
+                                $(cell).parent().removeClass('bg-primary');
                                 $(cell).parent().addClass('bg-danger');
                             } else {
-                                /*$(cell).parent().addClass('bg-primary');*/
+                                $(cell).parent().addClass('bg-primary');
                                 $(cell).parent().removeClass('bg-danger');
                             }
 
@@ -293,12 +289,12 @@ $(document).ready(function(){
 
                 if(result_row){
                     //Attribute is answered.
-                    //$grid_attr.parent().addClass('bg-primary');
-                    $grid_attr.parent().removeClass('bg-techcombank-danger');
+                    $grid_attr.parent().addClass('bg-primary');
+                    $grid_attr.parent().removeClass('bg-danger');
                 } else {
                     //Attribute is not answered.
-                    //$grid_attr.parent().removeClass('bg-primary');
-                    $grid_attr.parent().addClass('bg-techcombank-danger');
+                    $grid_attr.parent().removeClass('bg-primary');
+                    $grid_attr.parent().addClass('bg-danger');
                 }
             });
         }
@@ -324,9 +320,7 @@ $(document).ready(function(){
                     if($cat.is(':visible')){
                         $cat.hide();
                     } else {
-                        //$grid_attr.parent().addClass('bg-primary');
-                        $grid_attr.parent().removeClass('bg-techcombank-danger');
-
+                        $grid_attr.parent().addClass('bg-primary');
                         $cat.show();
                     } 
                 });
@@ -360,17 +354,18 @@ $(document).ready(function(){
 
                 if(result_row){
                     //Attribute is answered.
-                    //$grid_attr.parent().addClass('bg-primary');
-                    $grid_attr.parent().removeClass('bg-techcombank-danger');
+                    $grid_attr.parent().addClass('bg-primary');
+                    $grid_attr.parent().removeClass('bg-danger');
                 } else {
                     //Attribute is not answered.
                     count_error++;
 
-                    //$grid_attr.parent().removeClass('bg-primary');
-                    $grid_attr.parent().addClass('bg-techcombank-danger');
+                    $grid_attr.parent().removeClass('bg-primary');
+                    $grid_attr.parent().addClass('bg-danger');
 
                     if(count_error == 1){
                         $('.error').show();
+                        $('.mrNext').prop('disabled', true);
 
                         if(objRows[row]['row'].find('.mrErrorText').length){
                             str_attr = objRows[row]['row'].find('.mrQuestionText').html();
@@ -385,7 +380,10 @@ $(document).ready(function(){
             }
         });
 
-        if(count_error == 0) $('.error').hide();
+        if(count_error == 0){
+            $('.mrNext').prop('disabled', false);
+            $('.error').hide();
+        } 
     });
 
     $('.cat-single-item').change(function(event){

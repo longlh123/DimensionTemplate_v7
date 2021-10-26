@@ -25,7 +25,7 @@ table, caption, tbody, tfoot, thead, tr, th, td{
 }
 
 /* base styles */
-*{
+* {
 	box-sizing: border-box;
 }
 
@@ -84,6 +84,8 @@ hr{
 
 .section{font-weight: bold; text-align: center;}
 .instruction{font-style: italic; font-size: 0.7rem; color: #6f6e6e;}
+
+.openend_basic{margin-bottom: 1em;}
 
 .bg-primary{background-color: #047AA8!important;}
 .bg-info {background-color: #17a2b8!important;}
@@ -161,6 +163,7 @@ input[type="submit"]{
 	white-space: nowrap;
 	text-transform: uppercase;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 input[type="submit"]:hover{
@@ -168,8 +171,10 @@ input[type="submit"]:hover{
 }
 
 input[type="submit"]:disabled{
+	opacity: 0.8;
 	border: 1px solid #047AA8;
 	background-color: #047AA8;
+	cursor:not-allowed;
 }
 
 input[type="text"], textarea, select {
@@ -182,15 +187,11 @@ input[type="text"], textarea, select {
 	width: 100%;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	padding: 12px 12px;
-	/*margin-top: 12px;*/
-	margin-bottom: 32px;
-	/*font-size: 14px;*/
 	color: #a6a6a6;
 	line-height: 1.5;
 	border: 1px solid #aaa;
 	border-radius: 4px;
 	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
-	/* border-radius: 0.5rem; */
 	background-color: #fff;
 	text-align: justify;
 }
@@ -265,16 +266,23 @@ input[type="radio"]:disabled + label::before{
 
 .cat-group input[type="checkbox"] + label,
 .cat-group input[type="radio"] + label{
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-template-rows: 1fr;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
+	gap: 1em;
 }
 
+.cat-group input[type="checkbox"] + label span,
+.cat-group input[type="radio"] + label span{
+	margin-top: 0.075rem;
+}
+
+/*
 .cat-group input[type="checkbox"] + label::before,
 .cat-group input[type="radio"] + label::before{
 	margin-right: 1em;
 }
+
 
 .cat-group input[type="checkbox"] + label::before,
 .cat-group input[type="radio"] + label::before{
@@ -289,6 +297,7 @@ input[type="radio"]:disabled + label::before{
 	justify-items: center;
 	white-space: pre-line;
 }
+*/
 
 .error,
 .mrErrorText {
@@ -408,8 +417,8 @@ input[type="radio"]:disabled + label::before{
 
 .cat-image-container {
 	display: flex;
-	/*display: -webkit-flex; safari*/
-	flex-direction: column;
+	flex-direction: row;
+	justify-content: flex-start;
 	flex-wrap: wrap;
 }
 
@@ -436,7 +445,7 @@ input[type="radio"]:disabled + label::before{
 }
 
 .grid-container tbody tr {
-	/*border-bottom: 1px solid #dddddd;*/
+	border-bottom: 1px solid #dddddd;
 	word-wrap: break-word;
 }
 
@@ -445,21 +454,11 @@ input[type="radio"]:disabled + label::before{
 .grid-container tbody .grid-label,
 .grid-container tbody .grid-scale,
 .grid-container tbody .grid-cell {
-	/*text-align: center;*/
 	text-align: justify;
 	vertical-align: middle;
 	word-wrap: normal;
 	padding: 2px 10px;
 }
-
-/*
-.grid-container tbody .grid-attr,
-.grid-container tbody .grid-label,
-.grid-container tbody .grid-scale,
-.grid-container tbody .grid-cell {
-	border: 1px solid #C52425;
-}
-*/
 
 .grid-container tbody .grid-scale{
 	border-bottom: 2px solid #047AA8;	
@@ -470,11 +469,10 @@ input[type="radio"]:disabled + label::before{
 	color: #047AA8;
 }
 
-/*
 .grid-container tbody .grid-attr{
-	color: #000;
+	color: #fff;
 }
-*/
+
 .grid-container tbody tr .grid-cell:first-child{
 	border-left: 2px solid #047AA8;
 }
@@ -488,7 +486,7 @@ input[type="radio"]:disabled + label::before{
 }
 
 .grid-container tbody tr:last-of-type {
-    border-bottom: 2px solid #047AA8;
+    border-bottom: 1px solid #dddddd;
 }
 
 .grid-container tbody tr.active-row {

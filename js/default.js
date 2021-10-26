@@ -64,7 +64,6 @@ window.onload = function(){
     var mrPrevs = document.getElementsByName("_NPrev");
     
     if(mrPrevs.length > 0){
-
         console.log(!mrPrevs[0].hasOwnProperty('display'));
 
         if(!mrPrevs[0].hasOwnProperty('display')){
@@ -72,29 +71,17 @@ window.onload = function(){
             //mrPrevs[0].style.display = "none";
         }
     }
-}	
 
-/*
-jQuery(function($){
+    var mrNext = document.getElementsByName("_NNext")[0];
+    var divContent = document.getElementsByClassName("content")[0];
 
-    $('.mrNext').prop('disabled', false);
+    mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
 
-    $('.content').each(function(){
-        if($(this)[0].scrollHeight > $(this).innerHeight()){
-            $('.mrNext').prop('disabled', true);
-        }
-    });
-
-    $('.content').on('scroll', function(){
-
-        //console.log($(this).scrollTop() + $(this).innerHeight());
-        //console.log($(this)[0].scrollHeight);
-
-        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight){
-            $('.mrNext').prop('disabled', false);
+    divContent.addEventListener("scroll", function(e){
+        if(divContent.offsetHeight + divContent.scrollTop >= divContent.scrollHeight){
+            mrNext.disabled = false;
         } else {
-            $('.mrNext').prop('disabled', true);
+            mrNext.disabled = true;
         }
     });
-});
-*/
+}
