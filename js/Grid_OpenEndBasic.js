@@ -4,6 +4,7 @@
         placeholder : "text", //a symbol or piece of text that temporarily replaces st that is missing. 
         validation : "checkphonenumber", //the act of proving that st is true or correct
         type : "text|long|double", 
+        questiontype : "TOM-SPON", //TOM-SPON: Using for the TOM_SPON question
         sum : value
     }
     */
@@ -17,6 +18,8 @@
         
         //set the default value of type of a text field is 'text'.
         if(!obj.hasOwnProperty('type')) obj['type'] = 'text';
+        //set the default value of type of a questiontype is default
+        if(!obj.hasOwnProperty('questiontype')) obj['questiontype'] = 'default';
         //set the default value of validation is null.
         if(!obj.hasOwnProperty('validation')) obj['validation'] = null;
 
@@ -72,7 +75,7 @@ $(document).ready(function(){
     var objProperties = {};
 
     var str_obj = $(this).find(".custom_question_properties").length == 0 ? "" : $(this).find(".custom_question_properties").html();
-    objProperties[0] = $.fn.convertJSON(str_obj);
+    objProperties = $.fn.convertJSON(str_obj);
 
     var contents = {}, textareas = {};
     
@@ -127,6 +130,7 @@ $(document).ready(function(){
             }
             
             var sumcheck = 0;
+            var obj_rows = {};
 
             var items = $('.mrQuestionTable tbody tr').get().map(function(row){
                                 
@@ -158,70 +162,99 @@ $(document).ready(function(){
                             $texts = $td_txt.find('input[type=text]').length > 0 ? $td_txt.find('input[type=text]') : undefined;
                         }
 
+                        obj_rows[$texts.parent().parent().attr('id')] = $(row);
+
                         //console.log($td_content);
-                        
-                        $td_content.addClass('grid-content');
-                        $td_content.addClass('grid-content-openend');
-                        $td_content.addClass('content-primary');
-                        
-                        //$td_txt.addClass('grid-openend');
+                        switch(objProperties['questiontype']){
+                            case 'TOM-SPON':
+                                if($error != undefined) $error.hide();
+                                
+                                $td_content.hide();
+                                
+                                $texts.addClass('grid-openend-txt');
+                                
+                                var pos1 = parseInt($texts.parent().parent().parent().attr('pos_1'));
+                                var pos2 = parseInt($texts.parent().parent().parent().attr('pos_2'));
+                                
+                                $texts.addClass('txt-' + pos1 + "-" + pos2);
 
-                        $texts.addClass('grid-openend-txt');
-                        $texts.attr('placeholder', objProperties[0]['placeholder']);
-                        
-                        if($texts.is('textarea')){
-                            $texts.attr('rows', 3);
-                        }
-                        
-                        if($checkboxs != undefined){
-                            $checkboxs.each(function(index, chk){
-                                $(chk).addClass('grid-openend-chk');
-                            });
-                        }
-
-                        var str = $td_content.find('.mrQuestionText').html().replace(/<hr>.*<\/span>/g, '');
-                        
-                        $td_content.find('.mrQuestionText').html(str);
-
-                        if($error != undefined) {
-                            $error.hide();
-                            $td_content.find('.mrQuestionText').append("<hr><span class='error'>&ldquo;" + $error.html() + "&rdquo;</span>");
-                        
-                            $td_txt.show();
-                            $texts.focus();
-                        } else {
-                            $td_txt.hide();
-
-                            if($texts.val().length > 0){
-                                switch(objProperties[0]['type'].toLowerCase()){
-                                    case 'text':
-                                        $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $texts.val() + "&rdquo;</span>");
-                                        break;
-                                    case 'long':
-                                    case 'double':
-                                        $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $.fn.formatNumber($texts.val(), $('html').attr('lang').toLowerCase()) + "&rdquo;</span>");
-                                        break;
+                                if($td_content.find('.mrQuestionText').html().length == 0){
+                                    $texts.attr('placeholder', objProperties['placeholder']);
+                                } else {
+                                    $texts.attr('placeholder', $td_content.find('.mrQuestionText').html());
                                 }
-                            } else {
-                                if($checkboxs != undefined){
-                                    var flag = false;
-                                    $checkboxs.each(function(index, chk){
-                                        if($(chk).is(':checked')){
-                                            flag = true;
-                                            $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $(chk).next().find('span').html() + "&rdquo;</span>");
-                                        }
-                                    });
-
-                                    if(!flag){
-                                        $td_content.find('.mrQuestionText').append("<hr><span class='error'>&ldquo;" + "Thiếu câu trả lời." + "&rdquo;</span>");
+                                
+                                if(pos2 != 0){
+                                    if($texts.val().length == 0 || $texts.val() == '98'){
+                                        $(row).hide();
+                                        $(row).find('input[type=text]').val('');
                                     }
                                 }
-                            }
-                        }
+                                break;
+                            default:
+                                $td_content.addClass('grid-content');
+                                $td_content.addClass('grid-content-openend');
+                                $td_content.addClass('bg-info');
+                                
+                                $texts.addClass('grid-openend-txt');
+                                $texts.attr('placeholder', objProperties['placeholder']);
+                                
+                                if($texts.is('textarea')){
+                                    $texts.attr('rows', 3);
+                                }
+                                
+                                if($checkboxs != undefined){
+                                    $checkboxs.each(function(index, chk){
+                                        $(chk).addClass('grid-openend-chk');
+                                    });
+                                }
 
-                        if(objProperties[0]['validation'] != null){
-                            sumcheck += ($texts.val().length == 0 ? 0 : objProperties[0]['type'].toLowerCase() ? parseInt($texts.val()) : parseFloat($texts.val()));
+                                var str = $td_content.find('.mrQuestionText').html().replace(/<hr>.*<\/span>/g, '');
+                                
+                                $td_content.find('.mrQuestionText').html(str);
+
+                                if($error != undefined) {
+                                    $error.hide();
+                                    $td_content.find('.mrQuestionText').append("<hr><span class='error'>&ldquo;" + $error.html() + "&rdquo;</span>");
+                                
+                                    $td_txt.show();
+                                    $texts.focus();
+                                } else {
+                                    $td_txt.hide();
+
+                                    if($texts.val().length > 0){
+                                        switch(objProperties['type'].toLowerCase()){
+                                            case 'text':
+                                                $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $texts.val() + "&rdquo;</span>");
+                                                break;
+                                            case 'long':
+                                            case 'double':
+                                                $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $.fn.formatNumber($texts.val(), $('html').attr('lang').toLowerCase()) + "&rdquo;</span>");
+                                                break;
+                                        }
+                                    } else {
+                                        if($checkboxs != undefined){
+                                            var flag = false;
+                                            $checkboxs.each(function(index, chk){
+                                                if($(chk).is(':checked')){
+                                                    flag = true;
+                                                    $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $(chk).next().find('span').html() + "&rdquo;</span>");
+                                                }
+                                            });
+
+                                            if(!flag){
+                                                $td_content.find('.mrQuestionText').append("<hr><span class='error'>&ldquo;" + "Thiếu câu trả lời." + "&rdquo;</span>");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if(objProperties['validation'] != null){
+                                    sumcheck += ($texts.val().length == 0 ? 0 : objProperties['type'].toLowerCase() ? parseInt($texts.val()) : parseFloat($texts.val()));
+                                }
+                                break;
                         }
+                        
                     } else if($td_txt.find('select').length > 0){
 
                         $td_txt.find('select option[value="__0"]').prop('disabled', 'disabled');
@@ -236,13 +269,23 @@ $(document).ready(function(){
                 });
             });
 
-            if(objProperties[0]['validation'] != null){
+            if(objProperties['validation'] != null){
                 $(".mrQuestionTable").parent().append("<div id='grid-sum' class='grid-group'>Tổng cộng: " + sumcheck + "</div>")
             }
             break;
     }
 
-    console.log(objProperties[0]);
+    if(objProperties['questiontype'] == 'TOM-SPON'){
+        var count = 0;
+        
+        for(const[key, item] of Object.entries(obj_rows)){
+            count += (item.find('input[type=text]').val().length === 0 ? 0 : 1)
+        }
+
+        $('.mrNext').prop('disabled', !(count > 0));
+    }
+
+    console.log(objProperties);
 
     //The OpenEnd Grid
     $('.grid-content-openend').click(function(event){
@@ -264,7 +307,7 @@ $(document).ready(function(){
         
         if($texts.is(':visible')){
             if($texts.val().length > 0){
-                switch(objProperties[0]['type'].toLowerCase()){
+                switch(objProperties['type'].toLowerCase()){
                     case 'text':
                         $td_content.find('.mrQuestionText').append("<hr><span>&ldquo;" + $texts.val() + "&rdquo;</span>");
                         break;
@@ -292,7 +335,7 @@ $(document).ready(function(){
             
             $td_txt.hide();
         } else {
-            if(objProperties[0]['type'].toLowerCase() == 'long' || objProperties[0]['type'].toLowerCase() == 'double')
+            if(objProperties['type'].toLowerCase() == 'long' || objProperties['type'].toLowerCase() == 'double')
             {
                 $texts.val($.fn.formatNumber($texts.val(), $('html').attr('lang').toLowerCase()));
             }
@@ -304,30 +347,65 @@ $(document).ready(function(){
 
     //Format giá trị sau mỗi lần nhập 
     $('.grid-openend-txt').keyup(function(){
-        //Nếu type = long|double sẽ format theo 0.000,000
-        if(objProperties[0]['type'].toLowerCase() == 'long' || objProperties[0]['type'].toLowerCase() == 'double')
-        {
-            $(this).val($.fn.formatNumber($(this).val(), $('html').attr('lang').toLowerCase()));
-            /*
-            var $content = $(this).parent().parent().parent().prev().find('.mrQuestionText');
-            
-            if($(this).val().length > 0)
-            {
-                var str = $content.html().split('<hr>');
-                $content.html(str[0]);
-            }
-            */
+        switch(objProperties['questiontype']){
+            case 'TOM-SPON':
+                var classList = $(this).attr('class').split(/\s+/);
+                var pos_1 = parseInt(classList[classList.length - 1].split('-')[1]);
+                var pos_2 = parseInt(classList[classList.length - 1].split('-')[2]);
+                var $tr = undefined;
+                
+                if(pos_2 == 0){
+                    if($(this).val() == '98'){
+                        $(this).val('');
+                    }
+                    $tr = obj_rows["Cell." + pos_1 + "." + pos_2];
+                    $('.mrNext').prop('disabled', ($tr.find('input[type=text]').val().length == 0));
+                }
+
+                if(pos_2 < Object.keys(obj_rows).length - 1){
+                    var $tr = obj_rows["Cell." + pos_1 + "." + (pos_2 + 1)];
+
+                    if($(this).val().length > 0){
+                        $tr.show();
+                        $('.mrNext').prop('disabled', false);
+                    } else {
+                        for(var i = pos_2 + 1; i < Object.keys(obj_rows).length; i ++){
+                            $tr = obj_rows["Cell." + pos_1 + "." + i];
+                            
+                            $tr.hide();
+                            $tr.find('input[type=text]').val('');
+                        }
+                    }
+                } 
+                break;
+            default:
+                //Nếu type = long|double sẽ format theo 0.000,000
+                if(objProperties['type'].toLowerCase() == 'long' || objProperties['type'].toLowerCase() == 'double')
+                {
+                    $(this).val($.fn.formatNumber($(this).val(), $('html').attr('lang').toLowerCase()));
+                    /*
+                    var $content = $(this).parent().parent().parent().prev().find('.mrQuestionText');
+                    
+                    if($(this).val().length > 0)
+                    {
+                        var str = $content.html().split('<hr>');
+                        $content.html(str[0]);
+                    }
+                    */
+                }
+                break;
         }
+        
     });
 
     $('.grid-openend-txt').keypress(function(e){
         //Nếu type = long|double sẽ format theo 0.000,000
-        if(objProperties[0]['type'].toLowerCase() == 'long' || objProperties[0]['type'].toLowerCase() == 'double')
+        if(objProperties['type'].toLowerCase() == 'long' || objProperties['type'].toLowerCase() == 'double')
         {
             //44 - dấu phẩy
             //46 - dấu chấm
             var lang = $('html').attr('lang').toLowerCase();
-            var f = objProperties[0]['type'].toLowerCase() == 'long' ? ((e.keyCode >= 48 && e.keyCode <= 57) && e.keyCode != 44 && e.keyCode != 46)
+            var f = objProperties['type'].toLowerCase() == 'long' ? ((e.keyCode >= 48 && e.keyCode <= 57) && e.keyCode != 44 && e.keyCode != 46)
                                             : ((lang == "vi-vn" ? (((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 44) && e.keyCode != 46) : (((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 46) && e.keyCode != 44)));
             
             if(!f)
@@ -365,20 +443,20 @@ $(document).ready(function(){
 
     $('.grid-openend-txt').focusin(function(event){
         
-        if(objProperties[0]['validation'] != null){
+        if(objProperties['validation'] != null){
             $(this).data('sumcheck', $(this).val());
         }
     });
 
     $('.grid-openend-txt').focusout(function(event){
         
-        if(objProperties[0]['validation'] != null){
-            var prev = $.fn.convertToNumber($(this).data('sumcheck'), objProperties[0]['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
-            var current = $.fn.convertToNumber($(this).val(), objProperties[0]['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
+        if(objProperties['validation'] != null){
+            var prev = $.fn.convertToNumber($(this).data('sumcheck'), objProperties['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
+            var current = $.fn.convertToNumber($(this).val(), objProperties['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
             
             var s = $('#grid-sum').html().split(':');
             
-            var sum_prev = $.fn.convertToNumber(s[1].trim(), objProperties[0]['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
+            var sum_prev = $.fn.convertToNumber(s[1].trim(), objProperties['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
             
             var sum = sum_prev - prev + current;
             
@@ -389,7 +467,7 @@ $(document).ready(function(){
     //Format lại giá trị number khi nhấn submit
     $('input:submit').click(function(e){
         //Nếu type = long|double sẽ format theo 0.000,000
-        if(objProperties[0]['type'].toLowerCase() == 'long' || objProperties[0]['type'].toLowerCase() == 'double')
+        if(objProperties['type'].toLowerCase() == 'long' || objProperties['type'].toLowerCase() == 'double')
         {
             $('.mrQuestionTable tbody tr').get().map(function(row){
                 
@@ -415,15 +493,15 @@ $(document).ready(function(){
                 });
             });
             
-            if(objProperties[0]['validation'] != null)
+            if(objProperties['validation'] != null)
             {
                 var s = $('#grid-sum').html().split(':');
 
-                var sum = $.fn.convertToNumber(s[1].trim(), objProperties[0]['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
+                var sum = $.fn.convertToNumber(s[1].trim(), objProperties['type'].toLowerCase(), $('html').attr('lang').toLowerCase());
 
-                var html_error = "<div class='error'>Kiểm tra tổng phải bằng " + objProperties[0]['sumcheck'] + ".</div>";
+                var html_error = "<div class='error'>Kiểm tra tổng phải bằng " + objProperties['sumcheck'] + ".</div>";
 
-                if(sum != objProperties[0]['sumcheck'])
+                if(sum != objProperties['sumcheck'])
                 {
                     if($('#grid-sum').parent().find('.error').length == 0) $('#grid-sum').before(html_error);
                     

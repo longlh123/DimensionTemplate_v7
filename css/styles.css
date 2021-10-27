@@ -109,6 +109,11 @@ hr{
 	cursor: pointer;
 }
 
+.grid-content-openend{
+	color: #fff;
+	font-weight: 700;
+}
+
 .grid-group{
 	display: block;
 	font-weight: 800;
@@ -418,12 +423,14 @@ input[type="radio"]:disabled + label::before{
 .cat-image-container {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
 	flex-wrap: wrap;
+	align-items: stretch;
 }
 
-.cat-image-item {
-	width: 100%;
+.cat-image {
+	flex-shrink: 1;
+	flex-grow: 1;
+	flex-basis: 0;
 	text-align: center;
 }
 
@@ -692,15 +699,16 @@ input[type="radio"]:disabled + label::before{
 
 	.cat-image-container{
 		display: flex;
-		/*display: -webkit-flex; safari*/
 		flex-direction: row;
 		flex-wrap: wrap;
-		align-items: center;
+		align-items: stretch;
 	}
 	
-	.cat-image-item{
+	.cat-image{
+		flex-shrink: 1;
 		flex-grow: 1;
-		text-align: left;
+		flex-basis: 0;
+		text-align: center;
 	}
 }
 
