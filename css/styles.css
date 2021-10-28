@@ -131,6 +131,16 @@ hr{
     border-color: #b8daff;
 }
 
+.video_wrapper{
+	display: flex;
+	flex-direction: column;
+}
+
+.video_wrapper iframe{
+	min-height: 350px;
+	width: 100%;
+}
+
 button{
 	background: none;
 	border: 1px solid #047AA8;
@@ -515,7 +525,6 @@ input[type="radio"]:disabled + label::before{
     font-size: 0.8rem;
     font-family: Helvetica, Verdana, Geneva, Tahoma, sans-serif;
 }
-
 /* mobile styles */
 
 /* image modal */
@@ -709,6 +718,15 @@ input[type="radio"]:disabled + label::before{
 		flex-grow: 1;
 		flex-basis: 0;
 		text-align: center;
+	}
+
+	.video_wrapper{
+		align-items: center;
+	}
+	
+	.video_wrapper iframe{
+		min-height: 350px;
+		width: 550px;
 	}
 }
 

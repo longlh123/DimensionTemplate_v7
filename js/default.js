@@ -74,9 +74,15 @@ window.onload = function(){
 
     var mrNext = document.getElementsByName("_NNext")[0];
     var divContent = document.getElementsByClassName("content")[0];
-
-    mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
-
+    
+    setTimeout(function(){
+        var videobasic = document.getElementsByClassName("videobasic")[0];
+        
+        if(videobasic == null){
+            mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
+        }
+    }, 3000);
+    
     divContent.addEventListener("scroll", function(e){
         if(divContent.offsetHeight + divContent.scrollTop >= divContent.scrollHeight){
             mrNext.disabled = false;
