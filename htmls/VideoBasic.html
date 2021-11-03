@@ -11,7 +11,12 @@
         -->
         <mrData QuestionElement='Banner'> //Other Question Banners </mrData>
 	</div>
-    <div id="player"></div>
+    <div class='video_wrapper'>
+        <div id="player"></div>
+        <div class="video_controls">
+            <button type="button" id="btnPlay" >Play</button>
+        </div>
+    </div>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var mrNext = document.getElementsByName("_NNext");
@@ -64,6 +69,9 @@
             }
         });
 
+        var btnPlay = document.getElementById("btnPlay");
+        btnPlay.addEventListener('click', onPlay);
+
         var player; 
 
         //youtube function - onYouTubeIframeAPIReady
@@ -71,10 +79,10 @@
             player = new YT.Player('player', {
                 videoId: objProperties['videoid'],
                 playerVars: {
-                    //playlist: 'z1Ev1Z0cCG4,FG0fTKAqZ5g',
-                    autoplay: 1,
-                    controls: 0
-                },
+                    'cc_load_policy': 0,
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'showinfo': 0             },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange' : onPlayerStateChange
@@ -87,7 +95,8 @@
             console.log('youtube player is ready:' + event.data);
             mrNext[0].disabled = true;
             mrPrev[0].disabled = true;
-            //event.target.playVideo();
+            btnPlay.disabled = true;
+            player.playVideo();
         }
         
         //stateChange function - eg. play - stop - buffering - pause and so on
@@ -97,7 +106,16 @@
             if(event.data == YT.PlayerState.ENDED){
                 mrNext[0].disabled = false;
                 mrPrev[0].disabled = false;
+                btnPlay.disabled = false;
             }
+        }
+        
+        function onPlay(){
+            mrNext[0].disabled = true;
+            mrPrev[0].disabled = true;
+            btnPlay.disabled = true;
+            player.seekTo(0);
+            player.playVideo();
         }
     </script>
 </mrSubTemplate>    

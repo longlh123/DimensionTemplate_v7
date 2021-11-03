@@ -4,7 +4,7 @@
         placeholder : "text", //a symbol or piece of text that temporarily replaces st that is missing. 
         validation : "checkphonenumber", //the act of proving that st is true or correct
         type : "text|long|double", 
-        questiontype : "TOM-SPON", //TOM-SPON: Using for the TOM_SPON question
+        questiontype : "TOM-SPON|SCALE", //TOM-SPON: Using for the TOM_SPON question
         sum : value
     }
     */
@@ -186,8 +186,13 @@ $(document).ready(function(){
                                 
                                 if(pos2 != 0){
                                     if($texts.val().length == 0 || $texts.val() == '98'){
-                                        $(row).hide();
-                                        $(row).find('input[type=text]').val('');
+                                        $texts.val('');
+                                        
+                                        $prev_text = obj_rows["Cell." + pos1 + "." + (pos2 - 1)].find('input[type=text]');
+
+                                        if($prev_text.val().length == 0 || $prev_text.val() == '98'){
+                                            $(row).hide();
+                                        }
                                     }
                                 }
                                 break;
@@ -354,10 +359,17 @@ $(document).ready(function(){
                 var pos_2 = parseInt(classList[classList.length - 1].split('-')[2]);
                 var $tr = undefined;
                 
+                var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/g;
+
+                if(format.test($(this).val())){
+                    $(this).val($(this).val().replace(format, ''));
+                }
+
                 if(pos_2 == 0){
                     if($(this).val() == '98'){
                         $(this).val('');
                     }
+                     
                     $tr = obj_rows["Cell." + pos_1 + "." + pos_2];
                     $('.mrNext').prop('disabled', ($tr.find('input[type=text]').val().length == 0));
                 }

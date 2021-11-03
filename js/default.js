@@ -1,4 +1,4 @@
-window.onload = function(){
+document.addEventListener("DOMContentLoaded", function(event){
 
     if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
         console.log("is dark mode");
@@ -81,7 +81,7 @@ window.onload = function(){
         if(videobasic == null){
             mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
         }
-    }, 3000);
+    }, 300);
     
     divContent.addEventListener("scroll", function(e){
         if(divContent.offsetHeight + divContent.scrollTop >= divContent.scrollHeight){
@@ -90,4 +90,11 @@ window.onload = function(){
             mrNext.disabled = true;
         }
     });
+});
+
+/*
+window.onload = function(){
+
+    
 }
+*/

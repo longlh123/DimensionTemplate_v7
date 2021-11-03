@@ -165,7 +165,7 @@ $(document).ready(function(){
                         if($(cell).find('.mrQuestionText').length == 1){
                             $exclusive = $(cell).find('.mrQuestionText');
 
-                            if($exclusive.css('font-weight') == "700")
+                            if($exclusive.css('font-weight') == "700" || $exclusive.css('font-weight') == "bold")
                             {
                                 obj_catexclusives[$(cell).prop('id')] = $(cell);
 
