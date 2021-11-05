@@ -34,7 +34,7 @@ class ImageModal{
     }
 }
 
-window.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function(){
     
     new ImageModal();
 });

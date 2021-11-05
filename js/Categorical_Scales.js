@@ -48,15 +48,22 @@ class RangeSlider{
     }
 
     render(){
+        this.html.questionText = document.getElementsByClassName('mrQuestionText')[0];
         this.html.numDimension = this.html.root.previousElementSibling;
         
+        var txt = this.html.questionText.innerHTML;
+        this.html.questionText.innerHTML = txt.replace(/<img.*>/g, '');
+        
+        this.html.rangeImage = $.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>')
         this.html.rangeValue = $.template('<div class="range-value" id="range-value"></div>');
         this.html.rangeInput = $.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="0" />');
 
+        this.html.root.appendChild(this.html.rangeImage);
         this.html.root.appendChild(this.html.rangeValue);
         this.html.root.appendChild(this.html.rangeInput);
         this.html.root.appendChild(this.html.numDimension);
-
+        this.html.numDimension.hidden = true;
+        
         let that = this;
         
         this.html.rangeInput.on('change', function(e){
