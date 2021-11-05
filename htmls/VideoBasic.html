@@ -30,7 +30,7 @@
             if(custom_question_properties != null){
                 var str_obj = custom_question_properties[0].innerText;
 
-                objProperties = converJSON(str_obj);
+                objProperties = convertJSON(str_obj);
                 custom_question_properties[0].parentNode.style.display = "none";
             }
 
@@ -44,7 +44,7 @@
                 sum : value
             }
             */
-            function converJSON(s){
+            function convertJSON(s){
                 var obj = {};
                 
                 var a = s.split(',');

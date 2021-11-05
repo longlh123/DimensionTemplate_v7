@@ -1,8 +1,3 @@
-document.addEventListener("DOMContentLoaded", function(){
-
-    let rangeSlider = new RangeSlider("#range-slider");
-});
-
 $ = {
     get : function(selector){
         let elements = document.querySelectorAll(selector);
@@ -24,8 +19,23 @@ $ = {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function(){
+    let customQuestionProperties = document.getElementsByClassName('custom_question_properties');
+    let properties = {};
+    
+    if(customQuestionProperties.length > 0){
+        properties = convertJSON(customQuestionProperties[0].innerHTML);
+
+        customQuestionProperties[0].hidden = true;
+    }
+
+    let rangeSlider = new RangeSlider("#range-slider", properties);
+});
+
 class RangeSlider{
-    constructor(id){
+    constructor(id, properties){
+        this.properties = properties;
+
         this.html = {
             root : $.get(id)[0]
         }
@@ -39,19 +49,17 @@ class RangeSlider{
 
     render(){
         this.html.numDimension = this.html.root.previousElementSibling;
-
-        let num_min = this.html.numDimension.lastElementChild.style.min;
-        let num_max = this.html.numDimension.lastElementChild.style.max;
-
+        
         this.html.rangeValue = $.template('<div class="range-value" id="range-value"></div>');
-        this.html.rangeInput = $.template('<input type="range" min="1" max="10" value="0" />');
+        this.html.rangeInput = $.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="0" />');
 
         this.html.root.appendChild(this.html.rangeValue);
         this.html.root.appendChild(this.html.rangeInput);
         this.html.root.appendChild(this.html.numDimension);
 
         let that = this;
-        this.html.rangeInput.addEventListener('click', function(e){
+        
+        this.html.rangeInput.on('change', function(e){
             that.renderRangeSlider(e, this);
             that.renderRangeValue(e, this);
             that.setValue(e, this);
@@ -59,6 +67,7 @@ class RangeSlider{
     }
 
     renderRangeSlider(e, element){
+        //Get value of the input
         let x = element.value;
         //Get min and max value
         const num_min = e.target.min;
@@ -86,9 +95,19 @@ class RangeSlider{
             element.previousElementSibling.removeChild(element.previousElementSibling.lastChild);
         }
 
-        let span = $.template('<span class="heart">' + x + '</span>');
+        let span;
+
+        switch(this.properties["questiontype"].toLowerCase()){
+            case "closeness-slider":
+                span = $.template('<span class="heart"></span>');
+                break;
+            default:
+                span = $.template('<span class="comment">' + x + '</span>');
+                break;
+        }
+
         element.previousElementSibling.appendChild(span);
-        
+                
         //Get the width of the input
         const range_width = getComputedStyle(e.target).getPropertyValue('width')
         //Remove px and convert to number
@@ -100,9 +119,20 @@ class RangeSlider{
         const num_lable_width = label_width.substring(0, label_width.length - 2);
 
         let n =  num_range_width / (num_max - num_min); //độ rộng của mỗi phần
-        span.style.left = (((x - 1) * n) - this.scale(x, num_min, num_max, 25)) + "px";
-        span.style.transform = 'translateX(0) scale(' + (1 + (((x - 1) / (num_max - num_min))) * 0.4) + ')';
-        span.style.top = (1 - x) + "px";
+
+        switch(this.properties["questiontype"].toLowerCase()){
+            case "closeness-slider":
+                let heart = document.getElementsByClassName('heart')[0];
+                heart.style.left = (((x - 1) * n) - this.scale(x, num_min, num_max, 25)) + "px";
+                heart.style.transform = 'rotate(45deg) scale(' + (1 + (((x - 1) / (num_max - num_min))) * 0.4) + ')';
+                heart.style.top = (1 - Math.ceil(x / 10)) + "px";
+                break;
+            default:
+                span.style.left = (((x - 1) * n) - this.scale(x, num_min, num_max, 25)) + "px";
+                span.style.transform = 'translateX(0) scale(' + (1 + (((x - 1) / (num_max - num_min))) * 0.4) + ')';
+                span.style.top = (1 - x) + "px";
+                break;
+        }
     }
 
     scale(x, min, max, value){
@@ -111,6 +141,13 @@ class RangeSlider{
     }
 
     setValue(e, element){
-        this.html.numDimension.lastElementChild.value = e.target.value;
+        switch(this.properties["questiontype"].toLowerCase()){
+            case "closeness-slider":
+                this.html.numDimension.lastElementChild.value = Math.round(e.target.value / 10);
+                break;
+            default:
+                this.html.numDimension.lastElementChild.value = e.target.value;
+                break;
+        }
     }
 }
