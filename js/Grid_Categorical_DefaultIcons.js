@@ -231,7 +231,7 @@ $(document).ready(function(){
                                 s1 = s1.replace(/<.*?(\/>)/, "");
                                 s1 = s1.replace(/<.*?(>)/, "");
                                 
-                                $(cell).find('.mrQuestionText').html("<div class='cat-image-container'><div class='cat-image-item'>" + s2 + "</div><div class='cat-image-item'>" + s1 + "</div></div>");
+                                $(cell).find('.mrQuestionText').html("<div class='row'><div class='cell'>" + s2 + "</div><div class='cell'>" + s1 + "</div></div>");
                             }
                             
                             if($(cell).find('.mrErrorText').length == 1){

@@ -29,7 +29,7 @@ $(document).ready(function(){
                                 $(row).prev().wrap("<tr class='grid-subgroup'/>");
                             } else{
                                 if($(row).prev().find('.mrQuestionText').length == 1){
-                                    $(row).prev().wrap("<tr class='grid-attr'/>");
+                                    $(row).prev().wrap("<tr class='grid-attr grid-content bg-primary'/>");
 
                                     var text = $(row).prev().find('.mrQuestionText').html();
                                     var regExp = new RegExp("<img.*?>");
