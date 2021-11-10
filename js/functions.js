@@ -31,3 +31,24 @@ function convertJSON(s){
 
     return obj;
 }
+
+$ = {
+    get : function(selector){
+        let elements = document.querySelectorAll(selector);
+        for(let i = 0; i < elements.length; i++){
+            this.init(elements[i]);
+        }
+        return elements;
+    },
+    template : function(html){
+        var template = document.createElement('div');
+        template.innerHTML = html.trim();
+        return this.init(template.childNodes[0]);
+    },
+    init : function(element){
+        element.on = function(event, func){
+            this.addEventListener(event, func);
+        }
+        return element;
+    }
+}
