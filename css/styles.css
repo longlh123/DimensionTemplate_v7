@@ -369,7 +369,7 @@ input[type="range"]::-moz-range-thumb {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-top: 10px;
+	margin: 10px;
 }
 
 .range-image{
@@ -446,6 +446,24 @@ input[type="range"]::-moz-range-thumb {
 .range-value .heart::after{
 	top: 0;
 	left: -10px;
+}
+
+.range-label{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.range-label div{
+	flex: 1 0 0;
+	text-align: justify;
+	font-weight: 600;
+}
+
+.range-label div:last-child{
+	text-align: right;
 }
 
 .error,

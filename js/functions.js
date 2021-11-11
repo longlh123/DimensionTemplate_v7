@@ -3,7 +3,9 @@ obj = {
     placeholder : "text", //a symbol or piece of text that temporarily replaces st that is missing. 
     validation : "checkphonenumber", //the act of proving that st is true or correct
     type : "text|long|double", 
-    questiontype : "TOM-SPON", //TOM-SPON: Using for the TOM_SPON question
+    questiontype : "TOM-SPON"          : Using for the TOM_SPON question
+                   "CLOSENESS-SLIDER"  : Using for the scale question with a heart thumb. (minRange:1 & maxRange:100)
+                   "RANGE-SLIDER"      : Using for the scase question (minRange:1 & maxRange:5|7|9|10 & bottomLabel:Khong thich & topLabel:thich) 
     videoid : "string", //Ma video tu Youtube
     sum : value
 }
