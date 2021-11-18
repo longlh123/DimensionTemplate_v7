@@ -1,33 +1,3 @@
-$(function($){
-    /*
-    obj = {
-        placeholder : "text", //a symbol or piece of text that temporarily replaces st that is missing. 
-        validation : "checkphonenumber", //the act of proving that st is true or correct
-        type : "text|long|double", 
-        sum : value
-    }
-    */
-    $.fn.convertJSON = function(s){
-        var obj = {};
-        var a = s.split(',');
-        $.each(a, function(k, v){
-            var b = v.split(':');
-            obj[b[0].toLowerCase()] = b[1];
-        });
-
-        //set the default value of type of a text field is 'text'.
-        if(!obj.hasOwnProperty('type')) obj['type'] = 'text';
-        //set the default value of validation is null.
-        if(!obj.hasOwnProperty('validation')) obj['validation'] = null;
-        //set the default value of placeholder
-        if(!obj.hasOwnProperty('placeholder')) obj['placeholder'] = 'Điền câu trả lời...'
-        //set the default value of step
-        if(!obj.hasOwnProperty('step')) obj['step'] = 1
-        return obj;
-    };
-
-}(jQuery));
-
 $(document).ready(function(){
 
     var objProperties = {};

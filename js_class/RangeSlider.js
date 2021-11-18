@@ -3,7 +3,7 @@ class RangeSlider{
         this.properties = properties;
 
         this.html = {
-            root : $.get(id)[0]
+            root : objHTML.get(id)[0]
         }
         
         this.init();
@@ -28,9 +28,9 @@ class RangeSlider{
         var txt = this.html.questionText.innerHTML;
         this.html.questionText.innerHTML = txt.replace(/<img.*>/g, '');
         
-        this.html.rangeImage = $.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>')
-        this.html.rangeValue = $.template('<div class="range-value" id="range-value"></div>');
-        this.html.rangeInput = $.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="' + cur_value + '" />');
+        this.html.rangeImage = objHTML.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>')
+        this.html.rangeValue = objHTML.template('<div class="range-value" id="range-value"></div>');
+        this.html.rangeInput = objHTML.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="' + cur_value + '" />');
 
         this.html.root.appendChild(this.html.rangeImage);
         this.html.root.appendChild(this.html.rangeValue);
@@ -40,7 +40,7 @@ class RangeSlider{
         
         switch(this.properties["questiontype"].toLowerCase()){
             case "range-slider":
-                this.html.rangeLabel = $.template('<div class="range-label"><div>' + this.properties["bottomlabel"]  + '</div><div>' + this.properties["toplabel"]  + '</div></div>');
+                this.html.rangeLabel = objHTML.template('<div class="range-label"><div>' + this.properties["bottomlabel"]  + '</div><div>' + this.properties["toplabel"]  + '</div></div>');
                 this.html.root.appendChild(this.html.rangeLabel);
                 break;
         }
@@ -92,10 +92,10 @@ class RangeSlider{
 
         switch(this.properties["questiontype"].toLowerCase()){
             case "closeness-slider":
-                span = $.template('<span class="heart"></span>');
+                span = objHTML.template('<span class="heart"></span>');
                 break;
             case "range-slider":
-                span = $.template('<span class="comment">' + x + '</span>');
+                span = objHTML.template('<span class="comment">' + x + '</span>');
                 break;
         }
 
@@ -123,7 +123,7 @@ class RangeSlider{
             case "range-slider":
                 span.style.left = (((x - 1) * n) - this.scale(x, num_min, num_max, 25)) + "px";
                 span.style.transform = 'translateX(0) scale(1.5)';
-                span.style.top = "45%";
+                span.style.top = "65%";
                 break;
         }
     }

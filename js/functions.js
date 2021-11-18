@@ -34,7 +34,7 @@ function convertJSON(s){
     return obj;
 }
 
-$ = {
+objHTML = {
     get : function(selector){
         let elements = document.querySelectorAll(selector);
         for(let i = 0; i < elements.length; i++){

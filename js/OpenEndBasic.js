@@ -1,78 +1,3 @@
-(function($){
-    /*
-    obj = {
-        placeholder : "text", //a symbol or piece of text that temporarily replaces st that is missing. 
-        validation : "checkphonenumber", //the act of proving that st is true or correct
-        type : "text|long|double", 
-        questiontype : "TOM-SPON", //TOM-SPON: Using for the TOM_SPON question
-        sum : value
-    }
-    */
-    $.fn.convertJSON = function(s){
-        var obj = {};
-        var a = s.split(',');
-        $.each(a, function(k, v){
-            var b = v.split(':');
-            obj[b[0].toLowerCase()] = b[1];
-        });
-
-        //set the default value of type of a text field is 'text'.
-        if(!obj.hasOwnProperty('type')) obj['type'] = 'text';
-        //set the default value of type of a questiontype is default
-        if(!obj.hasOwnProperty('questiontype')) obj['questiontype'] = 'default';
-        //set the default value of validation is null.
-        if(!obj.hasOwnProperty('validation')) obj['validation'] = null;
-        
-        if(obj['validation'] != null && (obj['type'] == 'long' || obj['type'] == 'double')){
-            var regExp = new RegExp(/checksum\([0-9]*\)/);
-
-            if(regExp.test(obj['validation'].toLowerCase())){
-                var str = obj['validation'].toLowerCase().replace('checksum(', '');
-                str = str.replace(')', '');
-
-                obj['validation'] = "checksum";
-                obj['sumcheck'] = (obj['type'] == 'long' ? parseInt(str) : parseFloat(str));
-            }
-        }
-        //set the default value of placeholder
-        if(!obj.hasOwnProperty('placeholder')) obj['placeholder'] = 'Điền câu trả lời...'
-        //set the default value of step
-        if(!obj.hasOwnProperty('step')) obj['step'] = 1
-        return obj;
-    };
-
-    $.fn.formatNumber = function(num, lang) {
-        switch(lang)
-        {
-            case "vi-vn":
-                var n = num.toString().split(',');
-                p = n[0].toString().split('.').join('');  
-                return p.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$&.') + (n.length == 2 ? "," + n[1] : "");
-                break;
-            default:
-                var n = num.toString().split('.');
-                p = n[0].toString().split(',').join('');  
-                return p.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$&.') + (n.length == 2 ? "." + n[1] : "");
-                break;
-        }
-    };
-
-    $.fn.valCheckPhoneNumber = function(n){
-        var regexPattern = new RegExp(/^[0-9]{8,10}$/);
-        return regexPattern.test(n);
-    };
-
-    $.fn.valCheckCellPhoneNumber = function(n){
-        var regexPattern = new RegExp(/0((3[2-9]|5[2,6,8,9]|7[0,6-9]|8[1-6,8,9]|9[0-9])|(12[0-9]|16[2-9]|18[6,8]|199))[0-9]{7}$/);
-        return regexPattern.test(n);
-    };
-
-    $.fn.valCheckEmail = function(n){
-        var regexPattern = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        return regexPattern.test(n);
-    };
-}(jQuery));
-
 $(document).ready(function(){
 
     //List the custom properties, if any.
@@ -183,6 +108,12 @@ $(document).ready(function(){
                         $textbox.keyup(function(){
                             
                             $(this).val($.fn.formatNumber($(this).val(), $('html').attr('lang').toLowerCase()));
+                        });
+                    } else {
+                        $textbox.keyup(function(e){
+                            if($.fn.valCheckSpecialCharacters($(this).val())){
+                                $(this).val($(this).val().substring(0, $(this).val().length - 1));
+                            }
                         });
                     } 
                 }
