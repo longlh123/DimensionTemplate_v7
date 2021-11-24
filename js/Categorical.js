@@ -133,7 +133,8 @@ $(document).ready(function(){
                             objCatExclusives[$(span).prop('id')] = $(span);
 
                             $(this).addClass('exclusive');
-
+                            $(this).css('font-weight', 400);
+                            
                             $(span).addClass('exclusive');
 
                             isonlycat = false;

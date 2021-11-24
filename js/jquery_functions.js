@@ -6,7 +6,7 @@
         type : "text|long|double", 
         questiontype : 
             "TOM-SPON": Using for the TOM_SPON question
-            "DATE"    : Using for the DATEBASIC question with text content rule by DD/MM/YYYY or MM/YYYY
+            "DATE"    : Using for the DATEBASIC question with textcontentrule by DD/MM/YYYY or MM/YYYY
             "CLOSENESS-SLIDER" : Using for the CLOSENESS question with minRange:1 and maxRange:100
             "RANGE-SLIDER": Using for the RANGE SLIDER question with minRange:1 and maxRange:5|7|9|11
         sum : value
@@ -88,7 +88,7 @@
     };
 
     $.fn.valCheckSpecialCharacters = function(str){
-        var regexPattern = new RegExp(/[!@#$%^&*_+\-=\[\]{};'"\\|<>\/?]+/, 'g'); ///[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+        var regexPattern = new RegExp(/[!#$%^&*_+\-=\[\]{};'"\\|<>\/?]+/, 'g'); ///[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
         return regexPattern.test(str);
     }
 

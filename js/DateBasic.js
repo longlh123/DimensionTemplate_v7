@@ -158,8 +158,6 @@ $(document).ready(function(){
 
                         e.preventDefault();    
                     }
-
-                    console.log(dt);
                 }else{
                     var str = "<span class='error'>&ldquo;" + "Nhập thông tin Ngày/Tháng/Năm." + "&rdquo;</span>";
                     

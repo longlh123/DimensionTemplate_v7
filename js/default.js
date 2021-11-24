@@ -78,8 +78,10 @@ document.addEventListener("DOMContentLoaded", function(event){
     setTimeout(function(){
         var videobasic = document.getElementsByClassName("videobasic")[0];
         
-        if(videobasic == null){
-            mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
+        if(videobasic == undefined){
+            if(mrNext != undefined){
+                mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
+            }
         }
     }, 300);
     

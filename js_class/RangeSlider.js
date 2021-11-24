@@ -28,7 +28,7 @@ class RangeSlider{
         var txt = this.html.questionText.innerHTML;
         this.html.questionText.innerHTML = txt.replace(/<img.*>/g, '');
         
-        this.html.rangeImage = objHTML.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>')
+        this.html.rangeImage = objHTML.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>');
         this.html.rangeValue = objHTML.template('<div class="range-value" id="range-value"></div>');
         this.html.rangeInput = objHTML.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="' + cur_value + '" />');
 
@@ -102,10 +102,9 @@ class RangeSlider{
         element.previousElementSibling.appendChild(span);
                 
         //Get the width of the input
-        const range_width = getComputedStyle(element).getPropertyValue('width')
+        const range_width = getComputedStyle(element).getPropertyValue('width');
         //Remove px and convert to number
         const num_range_width = range_width.substring(0, range_width.length - 2);
-        
         //get the width of the label
         const label_width = getComputedStyle(element.previousElementSibling.childNodes[0]).getPropertyValue('width');
         //Remove px and convert to number
