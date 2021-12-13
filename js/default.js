@@ -86,7 +86,13 @@ document.addEventListener("DOMContentLoaded", function(event){
     }, 300);
     
     divContent.addEventListener("scroll", function(e){
-        if(divContent.offsetHeight + divContent.scrollTop >= divContent.scrollHeight){
+        console.log(divContent.offsetHeight);
+        console.log(divContent.scrollTop);
+        console.log(divContent.scrollHeight);
+
+        var domRect = divContent.getBoundingClientRect();
+        
+        if(divContent.getBoundingClientRect()["height"] + divContent.scrollTop >= divContent.scrollHeight){
             mrNext.disabled = false;
         } else {
             mrNext.disabled = true;

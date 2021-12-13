@@ -134,14 +134,14 @@ $(document).ready(function(){
 
                 if(has_value){
                     
-                    //var dt = ($sel_day.val().length == 1 ? "0" : "") + $sel_day.val() + "/" + ($sel_month.val().length == 1 ? "0" : "") + $sel_month.val() + "/" + $sel_year.val();
                     var dt_check = "", dt_result = "";
-                    if($sel_day.length > 0) dt_check += $sel_day.val();
-                    if($sel_month.length > 0) dt_check += (dt_check.length == 0 ? "01/" : "/") + $sel_month.val();
+                    
+                    if($sel_day.length > 0) dt_check += ($sel_day.val().length == 1 ? "0" : "") + $sel_day.val();
+                    if($sel_month.length > 0) dt_check += (dt_check.length == 0 ? "01/" : "/") + ($sel_month.val().length == 1 ? "0" : "") +  $sel_month.val();
                     if($sel_year.length > 0) dt_check += (dt_check.length == 0 ? "01/" : "/") + $sel_year.val();
 
-                    if($sel_day.length > 0) dt_result += $sel_day.val();
-                    if($sel_month.length > 0) dt_result += (dt_result.length == 0 ? "" : "/") + $sel_month.val();
+                    if($sel_day.length > 0) dt_result += ($sel_day.val().length == 1 ? "0" : "") + $sel_day.val();
+                    if($sel_month.length > 0) dt_result += (dt_result.length == 0 ? "" : "/") + ($sel_month.val().length == 1 ? "0" : "") +  $sel_month.val();
                     if($sel_year.length > 0) dt_result += (dt_result.length == 0 ? "" : "/") + $sel_year.val();
 
                     if($.fn.valCheckDate(dt_check)){

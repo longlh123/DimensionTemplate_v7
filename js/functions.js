@@ -6,6 +6,8 @@ obj = {
     questiontype : "TOM-SPON"          : Using for the TOM_SPON question
                    "CLOSENESS-SLIDER"  : Using for the scale question with a heart thumb. (minRange:1 & maxRange:100)
                    "RANGE-SLIDER"      : Using for the scase question (minRange:1 & maxRange:5|7|9|10 & bottomLabel:Khong thich & topLabel:thich) 
+                   "DATE"              : Using with textContentRule: DD/MM/YYYY or MM/YYYY
+    rangeExpression                    : Regular expression
     videoid : "string", //Ma video tu Youtube
     sum : value
 }
@@ -27,9 +29,11 @@ function convertJSON(s){
     //set the default value of validation is null.
     if(!obj.hasOwnProperty('validation')) obj['validation'] = null;
     //set the default value of placeholder
-    if(!obj.hasOwnProperty('placeholder')) obj['placeholder'] = 'Điền câu trả lời...'
+    if(!obj.hasOwnProperty('placeholder')) obj['placeholder'] = 'Điền câu trả lời...';
     //set the default value of step
-    if(!obj.hasOwnProperty('step')) obj['step'] = 1
+    if(!obj.hasOwnProperty('step')) obj['step'] = 1;
+    //set the range expression 
+    if(!obj.hasOwnProperty('rangeexpression')) obj['rangeexpression'] = null;
 
     return obj;
 }

@@ -30,7 +30,7 @@ table, caption, tbody, tfoot, thead, tr, th, td{
 }
 
 body{
-    font-size: 0.8rem;
+    font-size: 1rem;
 	line-height: 2.0rem;
     /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
 	font-family: Helvetica;
@@ -571,10 +571,11 @@ input[type="range"]::-moz-range-thumb {
 
 .cat-image input[type="checkbox"] + label img,
 .cat-image input[type="radio"] + label img {
-    height: 200px;
-	width: 200px;
+    height: 250px;
+	width: 250px;
 	transition-duration: 0.2s;
     transform-origin: 50% 50%;
+	object-fit: contain;
 }
 
 .cat-image input[type="checkbox"]:checked + label,
@@ -849,11 +850,64 @@ input[type="range"]::-moz-range-thumb {
 	cursor: not-allowed;
 }
 
+/*-------------------Conjoint---------------------*/
+.conjoint-container{
+	display: block;
+}
+
+.conjoint-wrapper{
+	display: grid;
+	grid-template-columns: repeat(5, 20%);
+	grid-template-rows: repeat(2, 1fr);
+}
+
+.conjoint-wrapper .attr{
+	border: 1px solid #f1f1f1;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 3px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.conjoint-wrapper .attr-text td{
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+.conjoint-wrapper .attr-text img{
+	width: 100%;
+	height: 250px;
+	max-width: 250px;
+	min-height: 250px;
+	object-fit: contain;
+}
+
+.conjoint-wrapper .attr-control td{
+	display: block;
+	width: 100%;
+}
+
+.conjoint-wrapper .attr-control input[type="text"]{
+	text-align: center;
+}
+
+.conjoint-wrapper .price{
+	font-weight: bold;
+	color: red;
+}
+
+.attr-button{
+	display: block;
+	text-align: center;
+	padding-top: 20px;
+}
+
 /* small tablet styles */
 @media screen and (min-width:640px) {
 	
 	body{
-		font-size: 0.9rem;
+		font-size: 1rem;
 	}
 
 	.logo{
@@ -894,7 +948,7 @@ input[type="range"]::-moz-range-thumb {
 @media screen and (min-width: 720px){
 	
 	body{
-		font-size: 0.9rem;
+		font-size: 1rem;
 	}
 
 	.logo{
@@ -940,3 +994,4 @@ input[type="range"]::-moz-range-thumb {
 		background-color: #fff;
 	}
 }
+
