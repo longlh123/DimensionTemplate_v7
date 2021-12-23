@@ -862,6 +862,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .conjoint-wrapper .attr{
+	position: relative;
 	border: 1px solid #f1f1f1;
 	margin: 5px;
 	padding: 5px;
@@ -877,9 +878,7 @@ input[type="range"]::-moz-range-thumb {
 
 .conjoint-wrapper .attr-text img{
 	width: 100%;
-	height: 250px;
-	max-width: 250px;
-	min-height: 250px;
+	height: 189px;
 	object-fit: contain;
 }
 
@@ -895,6 +894,19 @@ input[type="range"]::-moz-range-thumb {
 .conjoint-wrapper .price{
 	font-weight: bold;
 	color: red;
+}
+
+.conjoint-wrapper .discount{
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 1px solid #c56183;
+	padding: 0 5px 0 5px;
+	background-color: #c56183;
+	font-size: 0.8rem;
+	color: #ffc107;
+	opacity: 0.8;
+	border-radius: 4px;
 }
 
 .attr-button{

@@ -107,8 +107,8 @@ $(document).ready(function(){
 
         $(span).children().each(function(){
 
-            if($(this).is('input:radio') || $(this).is('input:checkbox'))
-            {
+            if($(this).is('input:radio') || $(this).is('input:checkbox')) {
+
                 if($(this).hasClass('mrSingle'))
                 {
                     $(this).addClass('cat-single-item');
@@ -117,11 +117,11 @@ $(document).ready(function(){
                 {
                     $(this).addClass('cat-multiple-item');
                 }
-                
+
                 ischecked = $(this).is(':checked');
             }
-            else if($(this).is('label'))
-            {
+            else if($(this).is('label')) {
+
                 $(this).children().each(function(){
 
                     if($(this).is('span') && $(this).attr('class') == "mrMultipleText")
@@ -142,23 +142,27 @@ $(document).ready(function(){
                     }
                 });
             }
-            else if($(this).is('span'))
-            {
-                $(this).children().each(function(){
+            else if($(this).is('span')) {
+
+                $(this).children().each(function() {
                     
-                    if($(this).is('span') && $(this).prop('class') == 'mrErrorText'){
+                    if($(this).is('span') && $(this).prop('class') == 'mrErrorText') {
                         $(this).addClass('error');
                         $(this).show();
-                    } else if($(this).is('input:text'))
-                    {
+                    } else if($(this).is('input:text')) {
+
                         objCatOthers[$(span).prop('id')] = $(span);
                         
                         $(this).addClass('cat-other');
                         $(this).show();
-
+                        
                         if(!ischecked) $(this).hide();
 
-                        if(objProperties.hasOwnProperty('placeholder')){
+                        if($(this).prev().length == 1) {
+                            $(this).prev().show();
+                        }
+
+                        if(objProperties.hasOwnProperty('placeholder')) {
                             $(this).attr('placeholder', objProperties['placeholder']);
                         }
 
@@ -173,14 +177,14 @@ $(document).ready(function(){
         return($(span));        
     });
 
-    $('.cat-single-item').change(function(event){
+    $('.cat-single-item').change(function(event) {
         
         var $cat_group = $(this).parent();
         
         $other = $cat_group.find('.cat-other');
         $other.show();
 
-        $.each(objCatOthers, function(key, cat){
+        $.each(objCatOthers, function(key, cat) {
             
             if(key != $cat_group.prop('id')) {
 
@@ -194,20 +198,24 @@ $(document).ready(function(){
         });
     });
 
-    $('.cat-multiple-item').change(function(event){
+    $('.cat-multiple-item').change(function(event) {
         
         var $cat_group = $(this).parent();
         
-        if($(this).is(':checked')){
+        if($(this).is(':checked')) {
             $cat_group.find('.cat-other').show();
+
+            if($cat_group.find('.cat-other').prev().length == 1){
+                $cat_group.find('.cat-other').prev().show();
+            }
 
             if($cat_group.hasClass('exclusive')) {
                 
-                $.each(objCats, function(key, cat){
+                $.each(objCats, function(key, cat) {
                     cat.find('.cat-multiple-item').prop('checked', false);
                 });
 
-                $.each(objCatOthers, function(key, cat){
+                $.each(objCatOthers, function(key, cat) {
                     cat.find('.cat-multiple-item').prop('checked', false);
 
                     cat.find('.cat-other').hide();
@@ -216,9 +224,9 @@ $(document).ready(function(){
                     cat.find('.mrErrorText').hide();
                 });
 
-                $.each(objCatExclusives, function(key, cat){
+                $.each(objCatExclusives, function(key, cat) {
                     
-                    if($cat_group.prop('id') != key){
+                    if($cat_group.prop('id') != key) {
                         cat.find('.cat-multiple-item').prop('checked', false);
                     }
                 });
@@ -231,6 +239,10 @@ $(document).ready(function(){
         } else {
             $cat_group.find('.cat-other').hide();
             $cat_group.find('.cat-other').val("");
+
+            if($cat_group.find('.cat-other').prev().length == 1) {
+                $cat_group.find('.cat-other').prev().hide();
+            }
 
             $cat_group.find('.mrErrorText').hide();
         }

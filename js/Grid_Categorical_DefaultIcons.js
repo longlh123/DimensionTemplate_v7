@@ -138,6 +138,7 @@ $(document).ready(function(){
                     }
 
                     if($chk != undefined){
+                        
                         $chk.after("<label for='" + $chk.prop('id') + "'>" + $(objCats[id_cat]).html() + "</label>");
                         
                         if($chk.hasClass('mrSingle'))
@@ -148,7 +149,10 @@ $(document).ready(function(){
                         {
                             $chk.addClass('cat-multiple-item');
                         }
-                        
+                        if($chk.css('visibility') == 'hidden'){
+                            $chk.prop('disabled', true);
+                        }
+
                         if($(cell).find('input[type=text]').length == 1){
                             $other = $(cell).find('input[type=text]');
                             

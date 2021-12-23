@@ -80,13 +80,25 @@ document.addEventListener("DOMContentLoaded", function(event){
         
         if(videobasic == undefined){
             if(mrNext != undefined){
-                mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
+                var domRect = divContent.getBoundingClientRect();
+                
+                console.log(divContent.getBoundingClientRect()["height"]);
+                console.log(divContent.scrollTop);
+                console.log(divContent.scrollHeight);
+
+                if(divContent.getBoundingClientRect()["height"] + divContent.scrollTop >= divContent.scrollHeight){
+                    mrNext.disabled = false;
+                } else {
+                    mrNext.disabled = true;
+                }
+
+                //mrNext.disabled = (divContent.scrollHeight > divContent.clientHeight);
             }
         }
     }, 300);
     
     divContent.addEventListener("scroll", function(e){
-        console.log(divContent.offsetHeight);
+        console.log(divContent.getBoundingClientRect()["height"]);
         console.log(divContent.scrollTop);
         console.log(divContent.scrollHeight);
 

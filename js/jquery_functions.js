@@ -189,7 +189,7 @@
     };
 
     $.fn.valCheckCellPhoneNumber = function(n){
-        var regexPattern = new RegExp(/0((3[2-9]|5[2,6,8,9]|7[0,6-9]|8[1-6,8,9]|9[0-9])|(12[0-9]|16[2-9]|18[6,8]|199))[0-9]{7}$/);
+        var regexPattern = new RegExp(/0((3[2-9]|5[2,6,8,9]|7[0,6-9]|8[1-6,7,8,9]|9[0-9])|(12[0-9]|16[2-9]|18[6,8]|199))[0-9]{7}$/);
         return regexPattern.test(n);
     };
 
@@ -199,7 +199,7 @@
     };
 
     $.fn.valCheckSpecialCharacters = function(str){
-        var regexPattern = new RegExp(/[!#$%^&*_+\-=\[\]{};'"|<>?]+/, 'g'); ///[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+        var regexPattern = new RegExp(/[!#$^&*_+\-=\[\]{}'"|<>?]+/, 'g'); ///[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
         return regexPattern.test(str);
     }
 
