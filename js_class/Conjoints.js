@@ -48,7 +48,7 @@ class Conjoint{
     renderAttributes(){
         let that = this;
 
-        let count = 0;
+        let count_blank = 0, count_zero = 0;
 
         this.html.attributes.forEach(function(attr, index){
             that.clearProperty(attr);
@@ -58,11 +58,35 @@ class Conjoint{
             let attrControlHTML = objHTML.template("<div class='attr-control'></div>");
             attrControlHTML.appendChild(attr.nextElementSibling);
 
-            let attPriceHTML = objHTML.template("<div class='price'>Đơn giá: " + attr.querySelectorAll('.price')[0].textContent + "</div>");
+            let attAliasNameHTML = objHTML.template("<div class='alias_name'>" +  attr.querySelectorAll('.alias_name')[0].textContent + "</div>")
+            attr.querySelectorAll('.alias_name')[0].remove();
+
+            let discount = attr.querySelectorAll('.discount')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.discount')[0].textContent);
+            let price = attr.querySelectorAll('.price')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.price')[0].textContent);
+            let promotion = attr.querySelectorAll('.promotion')[0].textContent;
+
             attr.querySelectorAll('.price')[0].remove();
-            
-            let attDiscountHTML = objHTML.template("<div class='discount'>GIẢM " + attr.querySelectorAll('.discount')[0].textContent + " %</div>");
             attr.querySelectorAll('.discount')[0].remove();
+            attr.querySelectorAll('.promotion')[0].remove();
+
+            let priceHTML = "<div class='price-wrapper'>";
+            let attPromotionHTML = undefined;
+
+            if(discount == 0){
+                priceHTML += "<span class='discount'>" + $.fn.formatNumber(price) + "<sup>đ</sup></span><span class='price'></span>";
+
+                //Promotion tặng quà đi kèm
+                if(promotion.length > 0 && promotion != "No discount"){
+                    attPromotionHTML = objHTML.template("<div class='promotion'>" + promotion + "</div>");
+                }
+            } else {
+                //Promotion giảm giá
+                priceHTML += "<span class='discount'>" + $.fn.formatNumber(discount) + "<sup>đ</sup></span><span class='price'>" + $.fn.formatNumber(price) + "<sup>đ</sup></span><span class='promotion-discount'>" + promotion + "</span>";
+            }
+            
+            priceHTML += "</div>" 
+
+            let attPriceHTML = objHTML.template(priceHTML);
 
             let attrTextHTML = objHTML.template("<div class='attr-text'></div>");
             attrTextHTML.appendChild(attr);
@@ -70,31 +94,66 @@ class Conjoint{
             let input = attrControlHTML.querySelector('input[type=text]');
 
             if(input.value.length == 0){
-                count++;
+                count_blank++;
+            } else {
+                if(input.value == 0){
+                    count_zero++;
+                }
             }
 
             input.addEventListener('change', function(e){
+                
+                let count_blank = 0, count_zero = 0;
 
+                that.html.attributes.forEach(function(attr, index){
+                    let attr_control = attr.parentElement.parentElement.querySelector("input[type='text']");
+
+                    if(attr_control.value.length == 0){
+                        count_blank++;
+                    } else {
+                        if(attr_control.value == 0){
+                            count_zero++;
+                        }
+                    }    
+                });
+                
+                let btn = that.html.conjointButton.querySelector('#btnNone');
+                
                 if(e.target.value.length > 0){
-                    if(e.target.value > 0){
-                        let btn = that.html.conjointButton.querySelector('#btnNone');
-                        
+                    if(count_zero == that.count()){
+                        btn.setAttribute('disabled', "");
+                    } else {
+                        if(btn.hasAttribute('disabled')){
+                            btn.removeAttribute('disabled');
+                        }
+                    }
+                } else {
+                    if(count_zero + count_blank == that.count()){
                         if(btn.hasAttribute('disabled')){
                             btn.removeAttribute('disabled');
                         }
                     }
                 }
+
+                that.allowNext = !(count_blank > 0 && that.count() == count_blank + count_zero);
             });
 
             childHTML.appendChild(attrTextHTML);
-            childHTML.appendChild(attDiscountHTML);
+            childHTML.appendChild(attAliasNameHTML);
             childHTML.appendChild(attPriceHTML);
+            if(attPromotionHTML != undefined) childHTML.appendChild(attPromotionHTML);
             childHTML.appendChild(attrControlHTML);
 
             that.html.conjointWrapper.appendChild(childHTML);
         }); 
 
-        this.allowNext = !(this.count() == count);
+        this.allowNext = !(this.count() == count_blank);
+
+        let btn = this.html.conjointButton.querySelector('#btnNone');
+
+        if(this.count() == count_zero){
+            btn.setAttribute('disabled', "");
+        } 
     }
 
     clearProperty(attr){
