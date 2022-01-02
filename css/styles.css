@@ -238,7 +238,7 @@ input[type="text"], textarea, select {
 	width: 100%;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	padding: 12px 12px;
-	color: #a6a6a6;
+	color: #212121;
 	line-height: 1.5;
 	border: 1px solid #aaa;
 	border-radius: 4px;
@@ -262,7 +262,7 @@ input[type="radio"]{
 input[type="checkbox"] + label,
 input[type="radio"] + label{
 	border-radius: 2px;
-	color: #6f6e6e;
+	color: #212121;
 	padding: 0.4em;
 	/*margin-top: 5px;*/
 	/*margin-bottom: 5px;*/
@@ -711,7 +711,7 @@ input[type="range"]::-moz-range-thumb {
 .mrShowText{
 	display: block;
 	padding: 5px;
-    color : #a6a6a6;
+    color : #212121;
     font-style: italic;
     font-weight: 600;
     font-size: 0.8rem;

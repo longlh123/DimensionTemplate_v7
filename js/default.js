@@ -82,11 +82,13 @@ document.addEventListener("DOMContentLoaded", function(event){
             if(mrNext != undefined){
                 var domRect = divContent.getBoundingClientRect();
                 
-                console.log(divContent.getBoundingClientRect()["height"]);
+                console.log(divContent.clientHeight);
                 console.log(divContent.scrollTop);
                 console.log(divContent.scrollHeight);
 
-                if(divContent.getBoundingClientRect()["height"] + divContent.scrollTop >= divContent.scrollHeight){
+                var p = ((divContent.getBoundingClientRect()["height"] + divContent.scrollTop) / divContent.scrollHeight) * 100;
+
+                if(p >= 95.0){
                     mrNext.disabled = false;
                 } else {
                     mrNext.disabled = true;
@@ -103,8 +105,9 @@ document.addEventListener("DOMContentLoaded", function(event){
         console.log(divContent.scrollHeight);
 
         var domRect = divContent.getBoundingClientRect();
-        
-        if(divContent.getBoundingClientRect()["height"] + divContent.scrollTop >= divContent.scrollHeight){
+        var p = ((divContent.getBoundingClientRect()["height"] + divContent.scrollTop) / divContent.scrollHeight) * 100;
+
+        if(p >= 95.0){
             mrNext.disabled = false;
         } else {
             mrNext.disabled = true;
