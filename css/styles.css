@@ -801,7 +801,7 @@ input[type="range"]::-moz-range-thumb {
 /*--------------------Capture Template-------------------*/
 .cloudinary_fileupload_container{
 	position: relative;
-	width: 225px;
+	/*width: 225px;*/
 }
 
 .cloudinary_fileupload_trigger{
@@ -810,6 +810,8 @@ input[type="range"]::-moz-range-thumb {
 	background: #39D2B4;
 	color: #fff;
 	font-size: 1em;
+	text-align: center;
+	border-radius: 2px;
 	transition: all .4s;
 	cursor: pointer;
 }
@@ -818,14 +820,14 @@ input[type="range"]::-moz-range-thumb {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 225px;
+	/*width: 225px;*/
 	opacity: 0;
 	padding: 14px 0;
 	cursor: pointer;
 }
 
 .cloudinary_fileupload_progressbar{
-	width: 225px;
+	width: 100%;
 }
 
 .thumbnails{
@@ -840,6 +842,8 @@ input[type="range"]::-moz-range-thumb {
 	opacity: 0.6;
 	color: #fff;
 	font-size: 1em;
+	text-align: center;
+	border-radius: 2px;
 	transition: all .4s;
 	cursor: not-allowed;
 }
@@ -848,7 +852,7 @@ input[type="range"]::-moz-range-thumb {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 225px;
+	/*width: 225px;*/
 	opacity: 0;
 	padding: 14px 0;
 	cursor: not-allowed;

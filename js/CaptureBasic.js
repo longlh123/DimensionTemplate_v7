@@ -70,8 +70,8 @@ $(document).ready(function(){
             }
         } else if($(this).prop('class') == "capture_container"){
             if(count == 5){
-
-                $(this).append("<div class = 'cloudinary_fileupload_container'><input type='file' name='file' accept = 'image/*' class ='cloudinary_fileupload' capture='camera' /><label for = 'cloudinary_fileupload' class = 'cloudinary_fileupload_trigger'>Select a file..</label><progress max = '100' value = '0' class = 'cloudinary_fileupload_progressbar'></progress></div><br></br><div class='thumbnails'></div>");
+                //capture='camera'
+                $(this).append("<div class = 'cloudinary_fileupload_container'><input type='file' name='file' accept = 'image/*' class ='cloudinary_fileupload' /><label for = 'cloudinary_fileupload' class = 'cloudinary_fileupload_trigger'>Choose an image to upload (.PNG, .JPG)..</label><progress max = '100' value = '0' class = 'cloudinary_fileupload_progressbar'></progress></div><br></br><div class='thumbnails'></div>");
 
                 if($('input:text').val().length > 0)
                 {
@@ -151,8 +151,8 @@ $(document).ready(function(){
                     $('.cloudinary_fileupload_progressbar').attr('value', Math.round((data.loaded * 100.0) / data.total));
                 });
             } else {
-
-                $(this).append("<div class = 'cloudinary_fileupload_container'><input type='file' name='file' accept = 'image/*' class ='cloudinary_fileupload_disable' capture='camera' /><label for = 'cloudinary_fileupload_disable' class = 'cloudinary_fileupload_trigger_disable'>Select a file..</label></div><br></br><div class='thumbnails'></div>");
+                //capture='camera'
+                $(this).append("<div class = 'cloudinary_fileupload_container'><input type='file' name='file' accept = 'image/*' class ='cloudinary_fileupload_disable' /><label for = 'cloudinary_fileupload_disable' class = 'cloudinary_fileupload_trigger_disable'>Choose an image to upload (.PNG, .JPG)..</label></div><br></br><div class='thumbnails'></div>");
             }
             
         }
