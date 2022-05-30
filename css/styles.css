@@ -82,6 +82,10 @@ hr{
 	border-top-color: #b1dfbb;
 }
 
+img{
+	width: 100%;
+}
+
 .section{font-weight: bold; text-align: center;}
 .instruction{font-style: italic; font-size: 0.7rem; color: #6f6e6e;}
 
