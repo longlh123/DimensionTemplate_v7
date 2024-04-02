@@ -35,11 +35,17 @@ class Conjoint{
     }
 
     setValue(v){
-        let inputs = this.html.conjointWrapper.querySelectorAll('input[type=text]');
-
+        let inputs = this.html.conjointWrapper.querySelectorAll('input[type=hidden]');
+        
         inputs.forEach(function(input, index){
+            
+            input.value = v
 
-            input.value = v;
+            let button_select = input.parentNode.parentNode.previousElementSibling
+            button_select.value = "ON";
+            button_select.classList.remove("btn-selected"); 
+            button_select.removeChild(button_select.childNodes[0]);
+            button_select.appendChild(objHTML.template("<span>CHỌN</span>")); 
         });
 
         this.allowNext = true;
@@ -53,22 +59,50 @@ class Conjoint{
         this.html.attributes.forEach(function(attr, index){
             that.clearProperty(attr);
             
-            let childHTML = objHTML.template("<div class='attr'</div>");
+            let childHTML = objHTML.template("<div class='attr'></div>");
 
             let attrControlHTML = objHTML.template("<div class='attr-control'></div>");
-            attrControlHTML.appendChild(attr.nextElementSibling);
+            
+            let buttonHTML = undefined;
+            let inputHTML = attr.nextElementSibling.querySelector("input[type=text]");
+            inputHTML.setAttribute('type', 'hidden');
 
+            if(inputHTML.value == 0){
+                buttonHTML = objHTML.template("<button type='button' id='btn." + attr.id.toLowerCase() + "' value='OFF'><span>CHỌN</span></button>");
+                buttonHTML.value = "ON";
+                buttonHTML.classList.remove("btn-selected");
+            } else {
+                buttonHTML = objHTML.template("<button type='button' id='btn." + attr.id.toLowerCase() + "' value='OFF'><div class='check'></div></button>");
+                buttonHTML.value = "OFF";
+                buttonHTML.classList.add("btn-selected");
+            }
+
+            attrControlHTML.appendChild(buttonHTML)
+            attrControlHTML.appendChild(attr.nextElementSibling);
+            
             let attAliasNameHTML = objHTML.template("<div class='alias_name'>" +  attr.querySelectorAll('.alias_name')[0].textContent + "</div>")
             attr.querySelectorAll('.alias_name')[0].remove();
 
-            let discount = attr.querySelectorAll('.discount')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.discount')[0].textContent);
-            let price = attr.querySelectorAll('.price')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.price')[0].textContent);
-            let promotion = attr.querySelectorAll('.promotion')[0].textContent;
+            let discount, price, promotion;
 
-            attr.querySelectorAll('.price')[0].remove();
-            attr.querySelectorAll('.discount')[0].remove();
-            attr.querySelectorAll('.promotion')[0].remove();
+            if(attr.querySelectorAll('.discount').length > 0){
+                discount = attr.querySelectorAll('.discount')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.discount')[0].textContent);
 
+                attr.querySelectorAll('.discount')[0].remove();
+            }
+
+            if(attr.querySelectorAll('.price').length > 0){
+                price = attr.querySelectorAll('.price')[0].textContent.length == 0 ? 0 : parseInt(attr.querySelectorAll('.price')[0].textContent);
+
+                attr.querySelectorAll('.price')[0].remove();
+            }
+
+            if(attr.querySelectorAll('.promotion').length > 0){
+                promotion = attr.querySelectorAll('.promotion')[0].textContent;
+
+                attr.querySelectorAll('.promotion')[0].remove();
+            }
+            
             let priceHTML = "<div class='price-wrapper'>";
             let attPromotionHTML = undefined;
 
@@ -81,7 +115,8 @@ class Conjoint{
                 }
             } else {
                 //Promotion giảm giá
-                priceHTML += "<span class='discount'>" + $.fn.formatNumber(discount) + "<sup>đ</sup></span><span class='price'>" + $.fn.formatNumber(price) + "<sup>đ</sup></span><span class='promotion-discount'>" + promotion + "</span>";
+                //priceHTML += "<span class='discount'>" + $.fn.formatNumber(discount) + "<sup>đ</sup></span><span class='price'>" + $.fn.formatNumber(price) + "<sup>đ</sup></span><span class='promotion-discount'>" + promotion + "</span>";
+                priceHTML += "<span class='discount'>" + $.fn.formatNumber(discount) + "<sup>đ</sup></span>";
             }
             
             priceHTML += "</div>" 
@@ -91,17 +126,18 @@ class Conjoint{
             let attrTextHTML = objHTML.template("<div class='attr-text'></div>");
             attrTextHTML.appendChild(attr);
 
-            let input = attrControlHTML.querySelector('input[type=text]');
+            //let input = attrControlHTML.querySelector('input[type=text]');
+            //let button_select = attrControlHTML.querySelector('button');
 
-            if(input.value.length == 0){
+            if(inputHTML.value.length == 0){
                 count_blank++;
             } else {
-                if(input.value == 0){
+                if(inputHTML.value == 0){
                     count_zero++;
                 }
             }
 
-            input.addEventListener('change', function(e){
+            inputHTML.addEventListener('change', function(e){
                 
                 let count_blank = 0, count_zero = 0;
 
@@ -117,20 +153,20 @@ class Conjoint{
                     }    
                 });
                 
-                let btn = that.html.conjointButton.querySelector('#btnNone');
+                let btnNone = that.html.conjointButton.querySelector('#btnNone');
                 
                 if(e.target.value.length > 0){
                     if(count_zero == that.count()){
-                        btn.setAttribute('disabled', "");
+                        btnNone.setAttribute('disabled', "");
                     } else {
-                        if(btn.hasAttribute('disabled')){
-                            btn.removeAttribute('disabled');
+                        if(btnNone.hasAttribute('disabled')){
+                            btnNone.removeAttribute('disabled');
                         }
                     }
                 } else {
                     if(count_zero + count_blank == that.count()){
-                        if(btn.hasAttribute('disabled')){
-                            btn.removeAttribute('disabled');
+                        if(btnNone.hasAttribute('disabled')){
+                            btnNone.removeAttribute('disabled');
                         }
                     }
                 }
@@ -138,6 +174,46 @@ class Conjoint{
                 that.allowNext = !(count_blank > 0 && that.count() == count_blank + count_zero);
             });
 
+            buttonHTML.addEventListener('click', function(e){
+                
+                that.html.attributes.forEach(function(attr, index){
+                    let attr_control = attr.parentElement.parentElement.querySelector("button");
+
+                    if(attr_control.id != buttonHTML.id){
+
+                        attr_control.value = "ON";
+                        attr_control.classList.remove("btn-selected");
+                        attr_control.removeChild(attr_control.childNodes[0]);
+                        attr_control.appendChild(objHTML.template("<span>CHỌN</span>"));
+
+                        let input_control = attr_control.nextElementSibling.querySelector("input[type='hidden']");
+                        input_control.value = null;
+                    }
+                });
+                
+                let btnNone = that.html.conjointButton.querySelector('#btnNone');
+                
+                this.removeChild(this.childNodes[0])
+
+                if(this.value == "OFF"){
+                    this.value = "ON"
+                    this.classList.remove("btn-selected")
+                    
+                    this.appendChild(objHTML.template("<span>CHỌN</span>"))
+                    inputHTML.value = null
+                } else {
+                    this.value = "OFF"
+                    this.classList.add("btn-selected")
+                    
+                    this.appendChild(objHTML.template("<div class='check'></div>"))
+                    inputHTML.value = 1
+
+                    if(btnNone.hasAttribute('disabled')){
+                        btnNone.removeAttribute('disabled');
+                    }
+                }
+            });
+            
             childHTML.appendChild(attrTextHTML);
             childHTML.appendChild(attAliasNameHTML);
             childHTML.appendChild(attPriceHTML);
@@ -186,6 +262,18 @@ class Conjoint{
         return this.html['root'].querySelectorAll('.mrGridCategoryText').length;
     }
 
+    count_blank(){
+        let s = 0;
+
+        this.html.conjointWrapper.childNodes.forEach(function(attr, index){
+
+            let txt = attr.querySelectorAll('input')[0];
+            s += (txt.value.length == 0 ? 1 : 0);
+        });
+
+        return s;
+    }
+
     sum(){
         let s = 0;
 
@@ -208,11 +296,17 @@ document.addEventListener("DOMContentLoaded", function(){
     btnSubmit.addEventListener('click', function(e){
 
         if(conjoint.allowNext){
-            conjoint.html.conjointMsgError.textContent = "";
-            conjoint.html.conjointMsgError.style.display = "none";
+            if(conjoint.count_blank() == conjoint.count()){
+                conjoint.html.conjointMsgError.textContent = "Vui lòng chọn 1 nhãn hiệu hoặc chọn 'Không chọn nhãn hiệu nào'.";
+                conjoint.html.conjointMsgError.style.display = "block";
+                e.preventDefault();
+            } else {
+                conjoint.html.conjointMsgError.textContent = "";
+                conjoint.html.conjointMsgError.style.display = "none";
+            }
         } else {
-            if(conjoint.sum() == 0){
-                conjoint.html.conjointMsgError.textContent = "Vui lòng chọn ít nhất 1 nhãn hiệu và nhập số lượng bạn muốn mua.";
+            if(conjoint.count_blank() == conjoint.count()){
+                conjoint.html.conjointMsgError.textContent = "Vui lòng chọn 1 nhãn hiệu hoặc chọn 'Không chọn nhãn hiệu nào'.";
                 conjoint.html.conjointMsgError.style.display = "block";
                 e.preventDefault();
             }

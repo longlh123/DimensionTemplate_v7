@@ -14,10 +14,16 @@ $(document).ready(function(){
     //Determine whether a question is the single or multiple answer question.
     var ismultiple = false;
     var cells = [];
+    var iscensydiam_template = false;
 
     var iscatimages = $('.content').find('.categorical_imagineicons').length == 1;
 
     console.log(iscatimages);
+
+    if(!iscatimages){
+        iscatimages = $('.content').find('.categorical_censydiam_imagineicons').length == 1;
+        iscensydiam_template = iscatimages;
+    }
 
     switch($(".mrQuestionTable").prop('tagName').toLowerCase())
     {
@@ -68,7 +74,11 @@ $(document).ready(function(){
             break;
         default:
             if(iscatimages){
-                $(".mrQuestionTable").addClass('cat-image-container');
+                if(iscensydiam_template){
+                    $(".mrQuestionTable").addClass('cat-image-censydiam-container');
+                } else {
+                    $(".mrQuestionTable").addClass('cat-image-container');
+                }
             } else {
                 $(".mrQuestionTable").addClass('cat-container');
             }
@@ -156,7 +166,7 @@ $(document).ready(function(){
                         $(this).addClass('cat-other');
                         $(this).show();
                         
-                        if(!ischecked) $(this).hide();
+                        if(!ischecked) $(this).parent().hide();
 
                         if($(this).prev().length == 1) {
                             $(this).prev().show();
@@ -179,20 +189,21 @@ $(document).ready(function(){
 
     $('.cat-single-item').change(function(event) {
         
-        var $cat_group = $(this).parent();
-        
-        $other = $cat_group.find('.cat-other');
-        $other.show();
+        var $cat_container = $(this).parent().parent();
 
-        $.each(objCatOthers, function(key, cat) {
-            
-            if(key != $cat_group.prop('id')) {
+        $cat_container.children().each(function(){
 
-                $oth = cat.find('.cat-other');
-                $oth.hide();
+            $oth = $(this).find('.cat-other');
+            $err = $(this).find('.mrErrorText');
+
+            ischecked = $(this).find('.cat-single-item').is(':checked');
+
+            if(ischecked){
+                $oth.parent().show();
+            } else {
+                $oth.parent().hide();
                 $oth.val("");
 
-                $err = cat.find('.mrErrorText');
                 $err.hide();
             }
         });
@@ -200,6 +211,67 @@ $(document).ready(function(){
 
     $('.cat-multiple-item').change(function(event) {
         
+        var $cat_container = $(this).parent().parent();
+
+        $other = $(this).parent().find('.cat-other');
+        $error = $(this).parent().find('.mrErrorText');
+
+        if($(this).is(':checked')){
+            
+            if($(this).parent().hasClass('exclusive')){
+
+                id_main = $(this).parent().prop('id');
+
+                $cat_container.children().each(function(){
+
+                    if(id_main != $(this).prop('id')){
+
+                        $(this).find('.cat-multiple-item').prop('checked', false);
+
+                        $oth = $(this).find('.cat-other');
+                        $err = $(this).find('.mrErrorText');
+
+                        $oth.parent().hide();
+                        $oth.val("");
+                        $err.hide();
+                    }
+                });
+            } else {
+
+                $cat_container.children().each(function(){
+
+                    if($(this).hasClass('exclusive')){
+
+                        $(this).find('.cat-multiple-item').prop('checked', false);
+                    }
+                })
+            } 
+
+            if($other.length != 0){
+                
+                if($(this).is(':checked')){
+                    $other.parent().show();
+                } else {
+                    $other.parent().hide();
+                    $other.val("");
+
+                    $error.hide();
+                }
+            }     
+        } else {
+
+            if($other.length != 0){
+
+                $other.parent().hide();
+                $other.val("");
+
+                $error.hide();
+            }
+        }
+
+
+        
+        /*
         var $cat_group = $(this).parent();
         
         if($(this).is(':checked')) {
@@ -246,6 +318,7 @@ $(document).ready(function(){
 
             $cat_group.find('.mrErrorText').hide();
         }
+        */
     });
 
     

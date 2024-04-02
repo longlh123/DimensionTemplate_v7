@@ -99,7 +99,7 @@ $(document).ready(function(){
                     
                     var str_obj = ($properties == undefined ? "" : $properties.text());
                     objProperties[id] = $.fn.convertJSON(str_obj);
-
+                        
                     console.log(objProperties);
                 } 
                 else if($(this).is('input:checkbox'))
@@ -193,9 +193,11 @@ $(document).ready(function(){
                         });
                     } else {
                         $textbox.keyup(function(e){
-                            if($.fn.valCheckSpecialCharacters($(this).val())){
-                                $(this).val($(this).val().substring(0, $(this).val().length - 1));
-                            }
+                            if(objProperties[id]['validation'] != "checkemail"){
+								if($.fn.valCheckSpecialCharacters($(this).val())){
+									$(this).val($(this).val().substring(0, $(this).val().length - 1));
+								}
+							}
                         });
                     } 
                 }
@@ -242,7 +244,7 @@ $(document).ready(function(){
                     
                     if($(this).prop('class') == "error"){
                         $(this).remove();
-                    } else if($(this).is('input:text'))
+                    } else if($(this).is('input:text') || $(this).is('textarea'))
                     {
                         var props = objProperties[$(this).prop('id')];
 

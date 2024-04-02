@@ -27,8 +27,14 @@ class RangeSlider{
 
         var txt = this.html.questionText.innerHTML;
         this.html.questionText.innerHTML = txt.replace(/<img.*>/g, '');
+        this.html.questionText.innerHTML = txt.replace(/<div.*>.*<\/div>/g, '')
         
-        this.html.rangeImage = objHTML.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>');
+        if(txt.match('<img.*>') != null){
+            this.html.rangeImage = objHTML.template('<div class="range-image" id="range-image">' + txt.match('<img.*>')[0] + '</div>');
+        } else {
+            this.html.rangeImage = objHTML.template('<div class="range-title" id="range-title">' + txt.match('<div.*>.*<\/div>')[0] + '</div>')
+        }
+        
         this.html.rangeValue = objHTML.template('<div class="range-value" id="range-value"></div>');
         this.html.rangeInput = objHTML.template('<input type="range" min="' + this.properties["minrange"] + '" max="' + this.properties["maxrange"] + '" value="' + cur_value + '" />');
 
@@ -122,7 +128,8 @@ class RangeSlider{
             case "range-slider":
                 span.style.left = (((x - 1) * n) - this.scale(x, num_min, num_max, 25)) + "px";
                 span.style.transform = 'translateX(0) scale(1.5)';
-                span.style.top = "65%";
+                //span.style.top = "65%";
+                span.style.top = "35%";
                 break;
         }
     }

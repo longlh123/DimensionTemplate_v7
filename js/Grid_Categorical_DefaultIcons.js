@@ -1,8 +1,8 @@
 $(document).ready(function(){
     
     var objRows = {};
-
-    switch($('.mrQuestionTable').prop('tagName').toLowerCase()){
+    
+    switch($('.grid_categorical_defaulticons').find('.mrQuestionTable').prop('tagName').toLowerCase()){
         case 'table':
             $(".mrQuestionTable").addClass('grid-container');
             

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
     if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
         console.log("is dark mode");
-        //document.getElementById("idlogo").src = "https://images1.ipsosinteractive.com/ABC_VIETNAM_10072020/source/images/Logo TCB-03.png";
+        document.getElementById("logo").src = "https://images1.ipsosinteractive.com/ABC_VIETNAM_10072020/source_ipsos/images/Manulife logo.png";
     }
 
     var elements = document.getElementsByTagName("input");
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     var mrPrevs = document.getElementsByName("_NPrev");
     
     if(mrPrevs.length > 0){
-        console.log(!mrPrevs[0].hasOwnProperty('display'));
+        //console.log(!mrPrevs[0].hasOwnProperty('display'));
 
         if(!mrPrevs[0].hasOwnProperty('display')){
             mrPrevs[0].style.visibility = "visible";
@@ -82,9 +82,9 @@ document.addEventListener("DOMContentLoaded", function(event){
             if(mrNext != undefined){
                 var domRect = divContent.getBoundingClientRect();
                 
-                console.log(divContent.clientHeight);
-                console.log(divContent.scrollTop);
-                console.log(divContent.scrollHeight);
+                //console.log(divContent.clientHeight);
+                //console.log(divContent.scrollTop);
+                //console.log(divContent.scrollHeight);
 
                 var p = ((divContent.getBoundingClientRect()["height"] + divContent.scrollTop) / divContent.scrollHeight) * 100;
 
